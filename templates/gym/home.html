@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Gym Lillyana{% endblock %}
+
+{% block content %}
+<div class="jumbotron mt-4 text-center">
+    <h1 class="display-4">Bienvenido al Sistema de Gimnasio</h1>
+    <p class="lead">Hola, {{ user.username }}. Estás autenticado exitosamente.</p>
+    <hr class="my-4">
+    <p>Utiliza el menú superior para navegar por los módulos (SPA).</p>
+    <form action="{% url 'logout' %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-lg">Cerrar Sesión</button>
+    </form>
+</div>
+{% endblock %}
