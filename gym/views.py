@@ -1,6 +1,43 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Miembro
+from .forms import MiembroForm
 
 @login_required
 def home(request):
     return render(request, 'gym/home.html')
+
+@login_required
+def miembro_list(request):
+    miembros = Miembro.objects.all()
+    # Si la petición es Ajax/Fetch, retorna solo un fragmento
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'gym/partials/miembro_list.html', {'miembros': miembros})
+    return render(request, 'gym/miembro_list.html', {'miembros': miembros})
+
+@login_required
+def miembro_create(request):
+    if request.method == 'POST':
+        form = MiembroForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Miembro creado exitosamente.")
+            return redirect('gym:miembro_list')
+        else:
+            messages.error(request, "Error al crear el miembro. Revisa los datos.")
+    else:
+        form = MiembroForm()
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'gym/partials/miembro_form.html', {'form': form})
+    return render(request, 'gym/miembro_form.html', {'form': form})
+
+@login_required
+def miembro_delete(request, pk):
+    miembro = get_object_or_404(Miembro, pk=pk)
+    if request.method == 'POST':
+        miembro.delete()
+        messages.success(request, "Miembro eliminado.")
+        return redirect('gym:miembro_list')
+    return redirect('gym:miembro_list')

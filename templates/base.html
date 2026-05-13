@@ -11,13 +11,27 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Gym Lillyana</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-toggle="target="#navbarNav">
+            <a class="navbar-brand spa-link" href="#" data-url="{% url 'gym:home' %}">Gym Lillyana</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <!-- Menú dinámico se agregará después -->
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link spa-link" href="#" data-url="{% url 'gym:miembro_list' %}">Miembros</a>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link nav-link">Salir ({{ user.username }})</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -25,21 +39,76 @@
 
     <div class="container mt-4" id="main-content">
         <!-- Contenedor para mensajes/alertas de Django -->
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
+        <div id="alert-container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
 
-        {% block content %}
-        {% endblock content %}
+        <div id="spa-content">
+            {% block content %}
+            {% endblock content %}
+        </div>
     </div>
 
     <!-- Bootstrap Local JS -->
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Lógica SPA (Fetch API) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const spaContent = document.getElementById("spa-content");
+
+            function loadContent(url) {
+                fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(res => res.text())
+                .then(html => {
+                    spaContent.innerHTML = html;
+                    window.history.pushState({html: html}, "", url);
+                })
+                .catch(err => console.error("SPA Error:", err));
+            }
+
+            document.body.addEventListener("click", e => {
+                if(e.target.classList.contains("spa-link")){
+                    e.preventDefault();
+                    loadContent(e.target.dataset.url);
+                }
+            });
+
+            document.body.addEventListener("submit", e => {
+                if(e.target.classList.contains("spa-form")){
+                    e.preventDefault();
+                    const form = e.target;
+                    const formData = new FormData(form);
+                    fetch(form.action, {
+                        method: form.method,
+                        body: formData,
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                    .then(res => {
+                        if (res.redirected) {
+                            loadContent(res.url); // Redirige como SPA
+                        } else {
+                            return res.text().then(html => spaContent.innerHTML = html);
+                        }
+                    })
+                    .catch(err => console.error("SPA Submit Error:", err));
+                }
+            });
+
+            window.addEventListener("popstate", e => {
+                if(e.state && e.state.html) spaContent.innerHTML = e.state.html;
+                else location.reload();
+            });
+        });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

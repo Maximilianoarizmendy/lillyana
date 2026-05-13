@@ -1,0 +1,7 @@
+<h2>{% if form.instance.pk %}Editar{% else %}Nuevo{% endif %} Miembro</h2>
+<form method="post" action="{% if form.instance.pk %}{% url 'gym:miembro_edit' form.instance.pk %}{% else %}{% url 'gym:miembro_create' %}{% endif %}" class="spa-form card p-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success mt-3">Guardar</button>
+    <button type="button" class="btn btn-secondary mt-3 ms-2 spa-link" data-url="{% url 'gym:miembro_list' %}">Cancelar</button>
+</form>

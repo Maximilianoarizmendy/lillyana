@@ -1,0 +1,31 @@
+from django import forms
+from .models import Miembro, Clase, Membresia
+from django.core.validators import RegexValidator
+
+class MiembroForm(forms.ModelForm):
+    # Ya incluimos regex en el modelo, pero podemos validarlo aquí también para mayor seguridad
+    telefono = forms.CharField(
+        validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El formato del teléfono debe ser: '+999999999'. Hasta 15 dígitos.")],
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej. +573001234567'})
+    )
+    class Meta:
+        model = Miembro
+        fields = ['nombre', 'apellido', 'telefono', 'email', 'membresia']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellido': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'membresia': forms.Select(attrs={'class': 'form-select'}),
+        }
+
+class ClaseForm(forms.ModelForm):
+    class Meta:
+        model = Clase
+        fields = '__all__'
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'instructor': forms.TextInput(attrs={'class': 'form-control'}),
+            'horario': forms.TextInput(attrs={'class': 'form-control'}),
+            'capacidad_maxima': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
