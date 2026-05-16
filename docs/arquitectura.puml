@@ -1,0 +1,7 @@
+@startuml
+node "Cliente (Navegador)" as client
+node "Servidor Django" as server
+database "SQLite" as db
+client --> server : HTTP/Fetch
+server --> db : ORM SQL
+@enduml
