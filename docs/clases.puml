@@ -1,0 +1,11 @@
+@startuml
+class Membresia {
+  nombre
+  precio
+}
+class Miembro {
+  nombre
+  telefono
+}
+Membresia "1" -- "0..*" Miembro
+@enduml
