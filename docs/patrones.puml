@@ -1,0 +1,5 @@
+@startuml
+package "Patrones de Diseño" {
+  note "1. MVC (Django MVT)\n2. Singleton (Settings)\n3. Repository (ORM)\n4. Factory (Forms)" as n1
+}
+@enduml
