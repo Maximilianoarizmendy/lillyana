@@ -1,1 +1,1 @@
-Bit·cora adicional: Despliegue.
+Bit√°cora adicional: Despliegue.
