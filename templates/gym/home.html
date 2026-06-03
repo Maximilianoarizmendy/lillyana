@@ -3,14 +3,31 @@
 {% block title %}Inicio - Tone Trainer{% endblock %}
 
 {% block content %}
-<div class="jumbotron mt-4 text-center">
-    <h1 class="display-4">Bienvenido al Sistema de Gimnasio</h1>
-    <p class="lead">Hola, {{ user.username }}. Estás autenticado exitosamente.</p>
-    <hr class="my-4">
-    <p>Utiliza el menú superior para navegar por los módulos (SPA).</p>
-    <form action="{% url 'logout' %}" method="post" class="d-inline">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger btn-lg">Cerrar Sesión</button>
-    </form>
+<div class="glass-card p-5 mt-4 text-center">
+    <i class="bi bi-activity text-gradient mb-3" style="font-size: 4rem;"></i>
+    <h1 class="display-4 fw-bold">Bienvenido, <span class="text-gradient">{{ user.username }}</span></h1>
+    <p class="lead text-muted mt-3">Panel de control de Tone Trainer. Accede a los módulos desde la navegación superior.</p>
+    
+    <div class="row mt-5 justify-content-center">
+        {% if user.groups.all.0.name == 'Admin' or user.is_superuser %}
+        <div class="col-md-4 mb-3">
+            <div class="card glass-card p-4 h-100 border-0">
+                <h4 class="fw-bold">Gestión de Miembros</h4>
+                <p class="text-muted small">Administra los clientes, membresías y sus planes de pago en el gimnasio.</p>
+                <button class="btn btn-outline-light mt-auto rounded-pill spa-link" data-url="{% url 'gym:miembro_list' %}">Ir a Miembros</button>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if user.groups.all.0.name == 'Nutricionista' or user.is_superuser %}
+        <div class="col-md-4 mb-3">
+            <div class="card glass-card p-4 h-100 border-0">
+                <h4 class="fw-bold">Planes de Nutrición</h4>
+                <p class="text-muted small">Evalúa pacientes, asigna dietas y realiza seguimiento a las métricas de salud.</p>
+                <button class="btn btn-outline-info mt-auto rounded-pill spa-link" data-url="{% url 'gym:plan_nutricional_list' %}">Ir a Nutrición</button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

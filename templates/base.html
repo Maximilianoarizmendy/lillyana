@@ -7,24 +7,37 @@
     <!-- Bootstrap Local -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="fade-in">
+    <nav class="navbar navbar-expand-lg navbar-dark glass-nav">
         <div class="container-fluid">
-            <a class="navbar-brand spa-link" href="#" data-url="{% url 'gym:home' %}">Tone Trainer</a>
+            <a class="navbar-brand spa-link fw-bold text-gradient" href="#" data-url="{% url 'gym:home' %}">
+                <i class="bi bi-activity"></i> Tone Trainer
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link spa-link" href="#" data-url="{% url 'gym:miembro_list' %}">Miembros</a>
-                    </li>
-                    <li class="nav-item">
+                        <li class="nav-item">
+                            <a class="nav-link spa-link" href="#" data-url="{% url 'gym:home' %}">Dashboard</a>
+                        </li>
+                        {% if user.groups.all.0.name == 'Admin' or user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link spa-link" href="#" data-url="{% url 'gym:miembro_list' %}">Miembros</a>
+                        </li>
+                        {% endif %}
+                        {% if user.groups.all.0.name == 'Nutricionista' or user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link spa-link" href="#" data-url="{% url 'gym:plan_nutricional_list' %}">Nutrición</a>
+                        </li>
+                        {% endif %}
+                    <li class="nav-item ms-3">
                         <form action="{% url 'logout' %}" method="post" class="d-inline">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-link nav-link">Salir ({{ user.username }})</button>
+                            <button type="submit" class="btn btn-outline-light btn-sm mt-1 rounded-pill px-3">Salir ({{ user.username }})</button>
                         </form>
                     </li>
                     {% else %}
