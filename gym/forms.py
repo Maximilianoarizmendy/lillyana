@@ -29,3 +29,16 @@ class ClaseForm(forms.ModelForm):
             'horario': forms.TextInput(attrs={'class': 'form-control'}),
             'capacidad_maxima': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
+from .models import PlanNutricional
+
+class PlanNutricionalForm(forms.ModelForm):
+    class Meta:
+        model = PlanNutricional
+        fields = '__all__'
+        widgets = {
+            'miembro': forms.Select(attrs={'class': 'form-select'}),
+            'peso_kg': forms.NumberInput(attrs={'class': 'form-control'}),
+            'altura_cm': forms.NumberInput(attrs={'class': 'form-control'}),
+            'dieta_recomendada': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        }

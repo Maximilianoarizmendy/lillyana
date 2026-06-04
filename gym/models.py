@@ -30,3 +30,13 @@ class Clase(models.Model):
     
     def __str__(self):
         return f"{self.nombre} - {self.instructor}"
+
+class PlanNutricional(models.Model):
+    miembro = models.OneToOneField(Miembro, on_delete=models.CASCADE)
+    peso_kg = models.DecimalField(max_digits=5, decimal_places=2, help_text="Peso en kilogramos")
+    altura_cm = models.IntegerField(help_text="Altura en centímetros")
+    dieta_recomendada = models.TextField()
+    fecha_actualizacion = models.DateField(auto_now=True)
+    
+    def __str__(self):
+        return f"Plan de {self.miembro}"

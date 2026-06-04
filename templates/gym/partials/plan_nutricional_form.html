@@ -1,0 +1,19 @@
+<h2>{% if form.instance.pk %}Editar{% else %}Asignar{% endif %} Plan Nutricional</h2>
+<form method="post" action="{% if form.instance.pk %}{% url 'gym:plan_nutricional_edit' form.instance.pk %}{% else %}{% url 'gym:plan_nutricional_create' %}{% endif %}" class="spa-form glass-card p-4 mt-3">
+    {% csrf_token %}
+    <div class="row">
+        {% for field in form %}
+        <div class="col-md-6 mb-3">
+            <label class="form-label text-muted">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary-custom px-4">Guardar Plan</button>
+        <button type="button" class="btn btn-outline-light ms-2 spa-link" data-url="{% url 'gym:plan_nutricional_list' %}">Cancelar</button>
+    </div>
+</form>
