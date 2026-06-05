@@ -32,9 +32,9 @@ def run():
     Membresia.objects.all().delete()
 
     # Membresías
-    mem_basica = Membresia.objects.create(tipo="Básica", precio=50000, duracion_dias=30)
-    mem_pro = Membresia.objects.create(tipo="Pro", precio=90000, duracion_dias=30)
-    mem_premium = Membresia.objects.create(tipo="Premium", precio=150000, duracion_dias=30)
+    mem_basica = Membresia.objects.create(nombre="Básica", precio=50000, duracion_dias=30)
+    mem_pro = Membresia.objects.create(nombre="Pro", precio=90000, duracion_dias=30)
+    mem_premium = Membresia.objects.create(nombre="Premium", precio=150000, duracion_dias=30)
     membresias = [mem_basica, mem_pro, mem_premium]
 
     # Miembros
@@ -43,15 +43,17 @@ def run():
     miembros = []
     
     for i in range(10):
-        nombre = f"{random.choice(nombres)} {random.choice(apellidos)}"
+        nombre = random.choice(nombres)
+        apellido = random.choice(apellidos)
         miembro = Miembro.objects.create(
             nombre=nombre,
-            correo=f"{nombre.replace(' ', '.').lower()}@example.com",
+            apellido=apellido,
+            email=f"{nombre.lower()}.{apellido.lower()}@example.com",
             telefono=f"300{random.randint(1000000, 9999999)}",
             membresia=random.choice(membresias)
         )
         miembros.append(miembro)
-        print(f"Creado Miembro: {miembro.nombre}")
+        print(f"Creado Miembro: {miembro.nombre} {miembro.apellido}")
 
     # Clases
     Clase.objects.create(nombre="Yoga", instructor="Marta", horario="Lunes 8:00 AM", capacidad_maxima=20)
