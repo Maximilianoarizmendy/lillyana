@@ -1,30 +1,73 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% block title %}Inicio - Tone Trainer{% endblock %}
 
 {% block content %}
-<div class="glass-card p-5 mt-4 text-center">
-    <i class="bi bi-activity text-gradient mb-3" style="font-size: 4rem;"></i>
-    <h1 class="display-4 fw-bold">Bienvenido, <span class="text-gradient">{{ user.username }}</span></h1>
-    <p class="lead text-muted mt-3">Panel de control de Tone Trainer. Accede a los módulos desde la navegación superior.</p>
-    
-    <div class="row mt-5 justify-content-center">
+<div class="fade-in">
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-8">
+            <h1 class="fw-bold mb-1">¡Hola, <span class="text-gradient">{{ user.username }}</span>! 👋</h1>
+            <p class="text-muted fs-5">Bienvenido al panel de control principal de Tone Trainer.</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <div class="d-inline-flex align-items-center px-4 py-2 premium-card rounded-pill">
+                <div class="me-3 text-end">
+                    <small class="text-muted d-block lh-1">Fecha</small>
+                    <strong class="lh-1">Hoy</strong>
+                </div>
+                <div class="rounded-circle bg-primary" style="width: 10px; height: 10px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="fw-bold mb-4">Acceso Rápido a Módulos</h4>
+    <div class="row g-4">
         {% if user.groups.all.0.name == 'Admin' or user.is_superuser %}
-        <div class="col-md-4 mb-3">
-            <div class="card glass-card p-4 h-100 border-0">
-                <h4 class="fw-bold">Gestión de Miembros</h4>
-                <p class="text-muted small">Administra los clientes, membresías y sus planes de pago en el gimnasio.</p>
-                <button class="btn btn-outline-light mt-auto rounded-pill spa-link" data-url="{% url 'gym:miembro_list' %}">Ir a Miembros</button>
+        <div class="col-md-4">
+            <div class="premium-card metric-card p-4 h-100 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h6 class="text-muted text-uppercase fw-bold mb-1" style="letter-spacing: 1px;">Gestión de Miembros</h6>
+                        <h2 class="display-5 fw-bold mb-0">10</h2>
+                    </div>
+                    <div class="p-3 bg-primary bg-opacity-10 rounded-3 text-primary">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05.02.01.03.04.04 1.14.83 1.93 1.94 1.93 3.41V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                    </div>
+                </div>
+                <p class="text-muted small mt-auto mb-4">Administra registros, clientes y sus planes de membresía activos.</p>
+                <button class="btn btn-outline-light w-100 rounded-pill spa-link" data-url="{% url 'gym:miembro_list' %}">Ir al Módulo</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="premium-card metric-card success p-4 h-100 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h6 class="text-muted text-uppercase fw-bold mb-1" style="letter-spacing: 1px;">Clases Activas</h6>
+                        <h2 class="display-5 fw-bold mb-0">3</h2>
+                    </div>
+                    <div class="p-3 bg-success bg-opacity-10 rounded-3 text-success">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 9h-2V7h-2v5H6v2h2v5h2v-5h2v-2z"/></svg>
+                    </div>
+                </div>
+                <p class="text-muted small mt-auto mb-4">Revisa la programación de entrenamientos y disponibilidad.</p>
+                <button class="btn btn-outline-light w-100 rounded-pill disabled">En desarrollo</button>
             </div>
         </div>
         {% endif %}
         
         {% if user.groups.all.0.name == 'Nutricionista' or user.is_superuser %}
-        <div class="col-md-4 mb-3">
-            <div class="card glass-card p-4 h-100 border-0">
-                <h4 class="fw-bold">Planes de Nutrición</h4>
-                <p class="text-muted small">Evalúa pacientes, asigna dietas y realiza seguimiento a las métricas de salud.</p>
-                <button class="btn btn-outline-info mt-auto rounded-pill spa-link" data-url="{% url 'gym:plan_nutricional_list' %}">Ir a Nutrición</button>
+        <div class="col-md-4">
+            <div class="premium-card metric-card warning p-4 h-100 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h6 class="text-muted text-uppercase fw-bold mb-1" style="letter-spacing: 1px;">Planes Médicos</h6>
+                        <h2 class="display-5 fw-bold mb-0">5</h2>
+                    </div>
+                    <div class="p-3 bg-warning bg-opacity-10 rounded-3 text-warning">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm4.5 5.5c-1.16 0-2.23.44-3.05 1.16-.83-.72-1.9-1.16-3.05-1.16-2.58 0-4.67 2.1-4.67 4.67C5.73 15.53 10.4 20.3 12 22c1.6-1.7 6.27-6.47 6.27-9.83C18.27 9.6 16.18 7.5 13.6 7.5h-2.1z"/></svg>
+                    </div>
+                </div>
+                <p class="text-muted small mt-auto mb-4">Accede a las métricas de salud (peso/altura) y dietas de pacientes.</p>
+                <button class="btn btn-premium w-100 rounded-pill spa-link" data-url="{% url 'gym:plan_nutricional_list' %}">Ver Pacientes</button>
             </div>
         </div>
         {% endif %}

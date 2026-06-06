@@ -1,19 +1,28 @@
-<h2>{% if form.instance.pk %}Editar{% else %}Asignar{% endif %} Plan Nutricional</h2>
-<form method="post" action="{% if form.instance.pk %}{% url 'gym:plan_nutricional_edit' form.instance.pk %}{% else %}{% url 'gym:plan_nutricional_create' %}{% endif %}" class="spa-form glass-card p-4 mt-3">
-    {% csrf_token %}
-    <div class="row">
-        {% for field in form %}
-        <div class="col-md-6 mb-3">
-            <label class="form-label text-muted">{{ field.label }}</label>
-            {{ field }}
-            {% if field.help_text %}
-            <small class="form-text text-muted">{{ field.help_text }}</small>
-            {% endif %}
+<div class="row justify-content-center mt-3">
+    <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0 text-warning">{% if form.instance.pk %}Modificar{% else %}Asignar{% endif %} Plan Clínico</h2>
+            <button type="button" class="btn btn-outline-light btn-sm rounded-pill px-3 spa-link" data-url="{% url 'gym:plan_nutricional_list' %}">Volver</button>
         </div>
-        {% endfor %}
+        <div class="premium-card p-5" style="border-top: 4px solid #f59e0b;">
+            <form method="post" action="{% if form.instance.pk %}{% url 'gym:plan_nutricional_edit' form.instance.pk %}{% else %}{% url 'gym:plan_nutricional_create' %}{% endif %}" class="spa-form">
+                {% csrf_token %}
+                <div class="row g-4">
+                    {% for field in form %}
+                    <div class="col-md-{% if field.name == 'dieta_recomendada' %}12{% else %}6{% endif %}">
+                        <label class="form-label text-muted small text-uppercase fw-bold mb-1" style="letter-spacing: 0.5px;">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <small class="form-text text-muted mt-1 d-block">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                <hr class="my-4" style="border-color: var(--border-color);">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-premium rounded-pill px-5">Confirmar Plan</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="mt-4">
-        <button type="submit" class="btn btn-primary-custom px-4">Guardar Plan</button>
-        <button type="button" class="btn btn-outline-light ms-2 spa-link" data-url="{% url 'gym:plan_nutricional_list' %}">Cancelar</button>
-    </div>
-</form>
+</div>

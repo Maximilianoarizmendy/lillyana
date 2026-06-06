@@ -1,28 +1,48 @@
-<h2>Planes Nutricionales</h2>
-<button class="btn btn-primary-custom mb-3 spa-link" data-url="{% url 'gym:plan_nutricional_create' %}">Asignar Nuevo Plan</button>
-<div class="glass-card p-4">
-    <table class="table table-dark table-hover table-borderless">
-        <thead>
-            <tr>
-                <th>Paciente (Miembro)</th>
-                <th>Peso (kg)</th>
-                <th>Altura (cm)</th>
-                <th>Actualizado</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for plan in planes %}
-            <tr>
-                <td>{{ plan.miembro }}</td>
-                <td>{{ plan.peso_kg }}</td>
-                <td>{{ plan.altura_cm }}</td>
-                <td>{{ plan.fecha_actualizacion }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4" class="text-center text-muted py-4">No hay planes registrados aún.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-0">Control Nutricional</h2>
+        <p class="text-muted mt-1">Gestión clínica de pacientes en Tone Trainer.</p>
+    </div>
+    <button class="btn btn-premium rounded-pill px-4 py-2 spa-link" data-url="{% url 'gym:plan_nutricional_create' %}">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" class="me-2 mb-1"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        Asignar Plan
+    </button>
+</div>
+
+<div class="premium-card p-0 overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-premium mb-0">
+            <thead class="bg-dark bg-opacity-50">
+                <tr>
+                    <th class="px-4 py-3">Paciente</th>
+                    <th class="px-4 py-3">Métricas Físicas</th>
+                    <th class="px-4 py-3">Dieta Asignada</th>
+                    <th class="px-4 py-3">Última Act.</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plan in planes %}
+                <tr>
+                    <td class="px-4 py-3 fw-bold text-primary">{{ plan.miembro }}</td>
+                    <td class="px-4 py-3">
+                        <div class="small"><span class="text-muted">Peso:</span> {{ plan.peso_kg }} kg</div>
+                        <div class="small"><span class="text-muted">Altura:</span> {{ plan.altura_cm }} cm</div>
+                    </td>
+                    <td class="px-4 py-3">
+                        <p class="small mb-0 text-muted" style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            {{ plan.dieta_recomendada }}
+                        </p>
+                    </td>
+                    <td class="px-4 py-3 text-muted small">{{ plan.fecha_actualizacion }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-5">
+                        <p class="mb-0">No hay planes registrados aún.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>

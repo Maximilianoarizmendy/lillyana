@@ -10,118 +10,164 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body class="fade-in">
-    <nav class="navbar navbar-expand-lg navbar-dark glass-nav">
-        <div class="container-fluid">
-            <a class="navbar-brand spa-link fw-bold text-gradient" href="#" data-url="{% url 'gym:home' %}">
-                <i class="bi bi-activity"></i> Tone Trainer
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link spa-link" href="#" data-url="{% url 'gym:home' %}">Dashboard</a>
-                        </li>
-                        {% if user.groups.all.0.name == 'Admin' or user.is_superuser %}
-                        <li class="nav-item">
-                            <a class="nav-link spa-link" href="#" data-url="{% url 'gym:miembro_list' %}">Miembros</a>
-                        </li>
-                        {% endif %}
-                        {% if user.groups.all.0.name == 'Nutricionista' or user.is_superuser %}
-                        <li class="nav-item">
-                            <a class="nav-link spa-link" href="#" data-url="{% url 'gym:plan_nutricional_list' %}">Nutrición</a>
-                        </li>
-                        {% endif %}
-                    <li class="nav-item ms-3">
-                        <form action="{% url 'logout' %}" method="post" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-light btn-sm mt-1 rounded-pill px-3">Salir ({{ user.username }})</button>
-                        </form>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
-                    </li>
-                    {% endif %}
-                </ul>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        {% if user.is_authenticated %}
+        <nav id="sidebar">
+            <div class="sidebar-header text-center">
+                <h3 class="fw-bold text-gradient mb-0" style="font-size: 1.8rem;">
+                    Tone Trainer
+                </h3>
+                <small class="text-muted d-block mt-2">Panel Premium</small>
             </div>
-        </div>
-    </nav>
 
-    <div class="container mt-4" id="main-content">
-        <!-- Contenedor para mensajes/alertas de Django -->
-        <div id="alert-container">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="#" class="spa-link" data-url="{% url 'gym:home' %}">
+                        <!-- Home SVG -->
+                        <svg viewBox="0 0 24 24"><path d="M12 2.1l-10 9 1.5 1.4L5 11v10h5v-6h4v6h5V11l1.5 1.5 1.5-1.4-10-9z"/></svg>
+                        Dashboard
+                    </a>
+                </li>
+                
+                {% if user.groups.all.0.name == 'Admin' or user.is_superuser %}
+                <li class="mt-3 text-uppercase text-muted px-4 small fw-bold" style="font-size: 0.75rem; letter-spacing: 1px;">Gestión Gym</li>
+                <li>
+                    <a href="#" class="spa-link" data-url="{% url 'gym:miembro_list' %}">
+                        <!-- Users SVG -->
+                        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05.02.01.03.04.04 1.14.83 1.93 1.94 1.93 3.41V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                        Miembros
+                    </a>
+                </li>
+                {% endif %}
 
-        <div id="spa-content">
-            {% block content %}
-            {% endblock content %}
+                {% if user.groups.all.0.name == 'Nutricionista' or user.is_superuser %}
+                <li class="mt-3 text-uppercase text-muted px-4 small fw-bold" style="font-size: 0.75rem; letter-spacing: 1px;">Clínica</li>
+                <li>
+                    <a href="#" class="spa-link" data-url="{% url 'gym:plan_nutricional_list' %}">
+                        <!-- Apple SVG -->
+                        <svg viewBox="0 0 24 24"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm4.5 5.5c-1.16 0-2.23.44-3.05 1.16-.83-.72-1.9-1.16-3.05-1.16-2.58 0-4.67 2.1-4.67 4.67C5.73 15.53 10.4 20.3 12 22c1.6-1.7 6.27-6.47 6.27-9.83C18.27 9.6 16.18 7.5 13.6 7.5h-2.1z"/></svg>
+                        Nutrición
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <div class="px-4 mt-auto position-absolute bottom-0 w-100 pb-4">
+                <div class="premium-card p-3 text-center mb-3">
+                    <div class="fw-bold">{{ user.username }}</div>
+                    <small class="text-muted d-block">{{ user.groups.all.0.name|default:"SuperAdmin" }}</small>
+                </div>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light w-100 rounded-pill">Cerrar Sesión</button>
+                </form>
+            </div>
+        </nav>
+        {% endif %}
+
+        <!-- Page Content -->
+        <div id="content" class="{% if not user.is_authenticated %}d-flex align-items-center justify-content-center{% endif %}">
+            <div id="alert-container">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show premium-card" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div id="spa-content">
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
     </div>
 
-    <!-- Bootstrap Local JS -->
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <!-- Lógica SPA (Fetch API) -->
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const spaContent = document.getElementById("spa-content");
+        document.addEventListener('DOMContentLoaded', function() {
+            function initializeSpaLinks() {
+                document.querySelectorAll('.spa-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const url = this.getAttribute('data-url');
+                        if (!url) return;
+                        
+                        document.querySelectorAll('.spa-link').forEach(l => l.parentElement.classList.remove('active'));
+                        if(this.parentElement.tagName === 'LI') {
+                            this.parentElement.classList.add('active');
+                        }
 
-            function loadContent(url) {
-                fetch(url, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-                .then(res => res.text())
-                .then(html => {
-                    spaContent.innerHTML = html;
-                    window.history.pushState({html: html}, "", url);
-                })
-                .catch(err => console.error("SPA Error:", err));
+                        fetch(url, {
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        })
+                        .then(response => {
+                            if (response.redirected) {
+                                window.location.href = response.url;
+                                return;
+                            }
+                            return response.text();
+                        })
+                        .then(html => {
+                            if (html) {
+                                document.getElementById('spa-content').innerHTML = html;
+                                initializeSpaLinks(); 
+                                initializeForms();
+                                window.history.pushState({"html":html}, "", url);
+                            }
+                        })
+                        .catch(err => console.error('Error SPA:', err));
+                    });
+                });
             }
 
-            document.body.addEventListener("click", e => {
-                if(e.target.classList.contains("spa-link")){
-                    e.preventDefault();
-                    loadContent(e.target.dataset.url);
-                }
-            });
+            function initializeForms() {
+                document.querySelectorAll('.spa-form').forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const url = this.action;
+                        const formData = new FormData(this);
 
-            document.body.addEventListener("submit", e => {
-                if(e.target.classList.contains("spa-form")){
-                    e.preventDefault();
-                    const form = e.target;
-                    const formData = new FormData(form);
-                    fetch(form.action, {
-                        method: form.method,
-                        body: formData,
-                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                    })
-                    .then(res => {
-                        if (res.redirected) {
-                            loadContent(res.url); // Redirige como SPA
-                        } else {
-                            return res.text().then(html => spaContent.innerHTML = html);
-                        }
-                    })
-                    .catch(err => console.error("SPA Submit Error:", err));
-                }
-            });
+                        fetch(url, {
+                            method: 'POST',
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                            body: formData
+                        })
+                        .then(response => {
+                            if (response.redirected) {
+                                window.location.href = response.url;
+                                return;
+                            }
+                            return response.text();
+                        })
+                        .then(html => {
+                            if (html) {
+                                document.getElementById('spa-content').innerHTML = html;
+                                initializeSpaLinks();
+                                initializeForms();
+                            }
+                        })
+                        .catch(err => console.error('Error enviando formulario:', err));
+                    });
+                });
+            }
 
-            window.addEventListener("popstate", e => {
-                if(e.state && e.state.html) spaContent.innerHTML = e.state.html;
-                else location.reload();
-            });
+            initializeSpaLinks();
+            initializeForms();
+
+            window.onpopstate = function(e){
+                if(e.state){
+                    document.getElementById('spa-content').innerHTML = e.state.html;
+                    initializeSpaLinks();
+                    initializeForms();
+                } else {
+                    window.location.reload();
+                }
+            };
         });
     </script>
-    {% block extra_js %}{% endblock %}
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
