@@ -1,0 +1,37 @@
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-8">
+        <h2 class="fw-bold mb-4 text-gradient">Tu Plan Nutricional</h2>
+        
+        {% if plan %}
+        <div class="premium-card p-5" style="border-top: 4px solid #10b981;">
+            <div class="row text-center mb-5">
+                <div class="col-6 border-end border-secondary border-opacity-25">
+                    <h6 class="text-muted text-uppercase fw-bold mb-2">Tu Peso Registrado</h6>
+                    <h2 class="display-6 fw-bold text-white mb-0">{{ plan.peso_kg }} <small class="fs-6 text-muted">kg</small></h2>
+                </div>
+                <div class="col-6">
+                    <h6 class="text-muted text-uppercase fw-bold mb-2">Tu Altura Registrada</h6>
+                    <h2 class="display-6 fw-bold text-white mb-0">{{ plan.altura_cm }} <small class="fs-6 text-muted">cm</small></h2>
+                </div>
+            </div>
+            
+            <h5 class="fw-bold mb-3 text-success">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" class="me-2"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm4.5 5.5c-1.16 0-2.23.44-3.05 1.16-.83-.72-1.9-1.16-3.05-1.16-2.58 0-4.67 2.1-4.67 4.67C5.73 15.53 10.4 20.3 12 22c1.6-1.7 6.27-6.47 6.27-9.83C18.27 9.6 16.18 7.5 13.6 7.5h-2.1z"/></svg>
+                Dieta y Recomendaciones
+            </h5>
+            <div class="p-4 bg-dark bg-opacity-50 rounded-3">
+                <p class="mb-0 text-light" style="line-height: 1.8;">
+                    {{ plan.dieta_recomendada|linebreaksbr }}
+                </p>
+            </div>
+            <p class="text-muted small text-end mt-4 mb-0">Última actualización: {{ plan.fecha_actualizacion }}</p>
+        </div>
+        {% else %}
+        <div class="premium-card p-5 text-center">
+            <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor" class="text-muted mb-4 opacity-50"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.86 3.75 3.97V22h2.5v-9.03C11.34 12.86 13 11.12 13 9V2h-2v7zm5-7v12h-2v8h4V2h-2z"/></svg>
+            <h4 class="fw-bold">Aún no tienes un plan médico asignado</h4>
+            <p class="text-muted mt-2">Por favor, acércate al área de nutrición de Tone Trainer para que un profesional evalúe tus métricas y te asigne una dieta.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>

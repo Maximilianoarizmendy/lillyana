@@ -42,18 +42,27 @@ def run():
     apellidos = ['Gómez', 'Pérez', 'Rodríguez', 'López', 'Martínez', 'Hernández']
     miembros = []
     
+    usuario_group, _ = Group.objects.get_or_create(name='Usuario')
+
     for i in range(10):
         nombre = random.choice(nombres)
         apellido = random.choice(apellidos)
+        email = f"{nombre.lower()}.{apellido.lower()}{i}@example.com"
+        telefono = f"300{random.randint(1000000, 9999999)}"
+        
+        user = User.objects.create_user(username=email, email=email, password=telefono)
+        user.groups.add(usuario_group)
+        
         miembro = Miembro.objects.create(
+            user=user,
             nombre=nombre,
             apellido=apellido,
-            email=f"{nombre.lower()}.{apellido.lower()}@example.com",
-            telefono=f"300{random.randint(1000000, 9999999)}",
+            email=email,
+            telefono=telefono,
             membresia=random.choice(membresias)
         )
         miembros.append(miembro)
-        print(f"Creado Miembro: {miembro.nombre} {miembro.apellido}")
+        print(f"Creado Miembro y Usuario: {miembro.nombre} {miembro.apellido} | Pass: {telefono}")
 
     # Clases
     Clase.objects.create(nombre="Yoga", instructor="Marta", horario="Lunes 8:00 AM", capacidad_maxima=20)

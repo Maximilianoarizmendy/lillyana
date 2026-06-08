@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.models import User, Group
 from .models import Miembro, PlanNutricional
 from .forms import MiembroForm, PlanNutricionalForm
 
 @login_required
 def home(request):
+    if request.user.groups.filter(name='Usuario').exists():
+        return redirect('gym:mi_plan')
+        
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         return render(request, 'gym/partials/home.html')
     return render(request, 'gym/home.html')
@@ -22,8 +26,21 @@ def miembro_create(request):
     if request.method == 'POST':
         form = MiembroForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Miembro creado exitosamente.")
+            miembro = form.save(commit=False)
+            
+            username = miembro.email
+            password = miembro.telefono if miembro.telefono else "usuario123"
+            user, created = User.objects.get_or_create(username=username, email=miembro.email)
+            if created:
+                user.set_password(password)
+                user.save()
+                grupo, _ = Group.objects.get_or_create(name='Usuario')
+                user.groups.add(grupo)
+            
+            miembro.user = user
+            miembro.save()
+            
+            messages.success(request, f"Miembro creado exitosamente. Clave de acceso: {password}")
             return redirect('gym:miembro_list')
         else:
             messages.error(request, "Error al crear el miembro. Revisa los datos.")
@@ -38,8 +55,10 @@ def miembro_create(request):
 def miembro_delete(request, pk):
     miembro = get_object_or_404(Miembro, pk=pk)
     if request.method == 'POST':
+        if miembro.user:
+            miembro.user.delete()
         miembro.delete()
-        messages.success(request, "Miembro eliminado.")
+        messages.success(request, "Miembro y cuenta de usuario eliminados.")
     return redirect('gym:miembro_list')
 
 @login_required
@@ -65,3 +84,16 @@ def plan_nutricional_create(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         return render(request, 'gym/partials/plan_nutricional_form.html', {'form': form})
     return render(request, 'gym/plan_nutricional_form.html', {'form': form})
+
+@login_required
+def mi_plan(request):
+    plan = None
+    try:
+        if hasattr(request.user, 'miembro'):
+            plan = request.user.miembro.plannutricional
+    except Exception:
+        pass
+        
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'gym/partials/mi_plan.html', {'plan': plan})
+    return render(request, 'gym/mi_plan.html', {'plan': plan})

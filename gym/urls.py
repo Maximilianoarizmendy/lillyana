@@ -10,4 +10,5 @@ urlpatterns = [
     path('miembros/<int:pk>/eliminar/', views.miembro_delete, name='miembro_delete'),
     path('nutricion/', views.plan_nutricional_list, name='plan_nutricional_list'),
     path('nutricion/nuevo/', views.plan_nutricional_create, name='plan_nutricional_create'),
+    path('mi-plan/', views.mi_plan, name='mi_plan'),
 ]
