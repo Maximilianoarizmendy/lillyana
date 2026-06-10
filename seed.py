@@ -24,6 +24,12 @@ def run():
         nutri = User.objects.create_user('nutricionista', 'nutri@example.com', 'nutri123')
         nutri.groups.add(nutri_group)
         print("Nutricionista user created")
+        
+    if not User.objects.filter(username='paciente').exists():
+        paciente_user = User.objects.create_user('paciente', 'paciente@test.com', 'paciente123')
+        paciente_group, _ = Group.objects.get_or_create(name='Usuario')
+        paciente_user.groups.add(paciente_group)
+        print("Paciente de prueba creado")
 
     # Limpiar datos
     PlanNutricional.objects.all().delete()
@@ -40,7 +46,16 @@ def run():
     # Miembros
     nombres = ['Carlos', 'Andrés', 'María', 'Laura', 'Juan', 'Diego', 'Camila', 'Sofía']
     apellidos = ['Gómez', 'Pérez', 'Rodríguez', 'López', 'Martínez', 'Hernández']
-    miembros = []
+    # Paciente estático de prueba
+    miembro_paciente = Miembro.objects.create(
+        user=paciente_user,
+        nombre="Juan",
+        apellido="Paciente Prueba",
+        email="paciente@test.com",
+        telefono="paciente123",
+        membresia=mem_basica
+    )
+    miembros = [miembro_paciente]
     
     usuario_group, _ = Group.objects.get_or_create(name='Usuario')
 
