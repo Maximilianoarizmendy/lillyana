@@ -1,4 +1,5 @@
 import os
+# pyrefly: ignore [missing-import]
 import django
 import random
 
@@ -25,11 +26,13 @@ def run():
         nutri.groups.add(nutri_group)
         print("Nutricionista user created")
         
-    if not User.objects.filter(username='paciente').exists():
-        paciente_user = User.objects.create_user('paciente', 'paciente@test.com', 'paciente123')
-        paciente_group, _ = Group.objects.get_or_create(name='Usuario')
-        paciente_user.groups.add(paciente_group)
-        print("Paciente de prueba creado")
+    paciente_user, created = User.objects.get_or_create(username='paciente', defaults={'email': 'paciente@test.com'})
+    if created:
+        paciente_user.set_password('paciente123')
+        paciente_user.save()
+    paciente_group, _ = Group.objects.get_or_create(name='Usuario')
+    paciente_user.groups.add(paciente_group)
+    print("Paciente de prueba creado")
 
     # Limpiar datos
     PlanNutricional.objects.all().delete()
