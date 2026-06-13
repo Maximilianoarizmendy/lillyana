@@ -36,6 +36,8 @@ body {
     border-right: 1px solid var(--border-color);
     box-shadow: 4px 0 15px rgba(0,0,0,0.2);
     min-height: 100vh;
+    position: relative;
+    z-index: 1000;
 }
 
 #sidebar .sidebar-header {
@@ -75,6 +77,12 @@ body {
     width: 100%;
     padding: 30px;
     min-height: 100vh;
+    overflow-y: auto;
+}
+
+/* Utils */
+.text-muted {
+    color: var(--text-muted) !important;
 }
 
 /* Glassmorphism Cards */
