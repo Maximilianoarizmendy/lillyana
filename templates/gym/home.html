@@ -55,21 +55,21 @@
         {% endif %}
         
         {% if user.groups.all.0.name == 'Nutricionista' or user.is_superuser %}
-        <div class="col-md-4">
-            <div class="premium-card metric-card warning p-4 h-100 d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-4">
-                    <div>
-                        <h6 class="text-muted text-uppercase fw-bold mb-1" style="letter-spacing: 1px;">Planes Médicos</h6>
-                        <h2 class="display-5 fw-bold mb-0">5</h2>
-                    </div>
-                    <div class="p-3 bg-warning bg-opacity-10 rounded-3 text-warning">
-                        <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm4.5 5.5c-1.16 0-2.23.44-3.05 1.16-.83-.72-1.9-1.16-3.05-1.16-2.58 0-4.67 2.1-4.67 4.67C5.73 15.53 10.4 20.3 12 22c1.6-1.7 6.27-6.47 6.27-9.83C18.27 9.6 16.18 7.5 13.6 7.5h-2.1z"/></svg>
+            <div class="col-md-4">
+                <div class="card metric-card premium-card" style="border-top: 4px solid #f59e0b;">
+                    <div class="card-body">
+                        <h6 class="text-muted text-uppercase fw-bold mb-3">Planes Nutricionales</h6>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="display-5 fw-bold mb-0 text-white">{{ planes_count|default:"5" }}</h2>
+                            <div class="icon-box" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                                <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm4.5 5.5c-1.16 0-2.23.44-3.05 1.16-.83-.72-1.9-1.16-3.05-1.16-2.58 0-4.67 2.1-4.67 4.67C5.73 15.53 10.4 20.3 12 22c1.6-1.7 6.27-6.47 6.27-9.83C18.27 9.6 16.18 7.5 13.6 7.5h-2.1z"/></svg>
+                            </div>
+                        </div>
+                        <p class="text-muted small">Accede a las métricas de salud (peso/altura) y dietas de los miembros del gimnasio.</p>
+                        <a href="#" class="btn btn-primary-custom w-100 spa-link" data-url="{% url 'gym:plan_nutricional_list' %}">Ver Dietas Asignadas</a>
                     </div>
                 </div>
-                <p class="text-muted small mt-auto mb-4">Accede a las métricas de salud (peso/altura) y dietas de pacientes.</p>
-                <button class="btn btn-premium w-100 rounded-pill spa-link" data-url="{% url 'gym:plan_nutricional_list' %}">Ver Pacientes</button>
             </div>
-        </div>
         {% endif %}
     </div>
 </div>
