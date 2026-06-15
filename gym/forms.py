@@ -42,3 +42,14 @@ class PlanNutricionalForm(forms.ModelForm):
             'altura_cm': forms.NumberInput(attrs={'class': 'form-control'}),
             'dieta_recomendada': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         }
+
+class RegistroForm(forms.Form):
+    nombre = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej. Juan'}))
+    apellido = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej. Pérez'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'correo@ejemplo.com'}))
+    telefono = forms.CharField(
+        validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El formato del teléfono debe ser: '+999999999'. Hasta 15 dígitos.")],
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej. 3001234567'})
+    )
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña segura'}))

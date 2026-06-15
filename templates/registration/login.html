@@ -23,8 +23,11 @@
                         <label for="id_password" class="form-label text-muted">Contraseña</label>
                         {{ form.password }}
                     </div>
-                    <button type="submit" class="btn btn-primary-custom w-100 rounded-pill py-2">Ingresar a la plataforma</button>
+                    <button type="submit" class="btn btn-premium w-100 rounded-pill py-2 mb-3">Ingresar a la plataforma</button>
                 </form>
+                <div class="text-center">
+                    <p class="text-muted small mb-0">¿No tienes cuenta? <a href="{% url 'registro' %}" class="text-primary text-decoration-none fw-bold">Regístrate aquí</a></p>
+                </div>
             </div>
         </div>
     </div>

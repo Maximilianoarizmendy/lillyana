@@ -3,7 +3,45 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from .models import Miembro, PlanNutricional
-from .forms import MiembroForm, PlanNutricionalForm
+from .forms import MiembroForm, PlanNutricionalForm, RegistroForm
+
+def registro(request):
+    if request.user.is_authenticated:
+        return redirect('gym:home')
+        
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            nombre = form.cleaned_data.get('nombre')
+            apellido = form.cleaned_data.get('apellido')
+            email = form.cleaned_data.get('email')
+            telefono = form.cleaned_data.get('telefono')
+            password = form.cleaned_data.get('password')
+            
+            # Crear cuenta de User
+            user, created = User.objects.get_or_create(username=email, defaults={'email': email})
+            if created:
+                user.set_password(password)
+                user.save()
+                grupo, _ = Group.objects.get_or_create(name='Usuario')
+                user.groups.add(grupo)
+                
+                # Crear Miembro
+                Miembro.objects.create(
+                    user=user,
+                    nombre=nombre,
+                    apellido=apellido,
+                    email=email,
+                    telefono=telefono
+                )
+                messages.success(request, "¡Tu cuenta ha sido creada con éxito! Ahora puedes iniciar sesión.")
+                return redirect('login')
+            else:
+                messages.error(request, "Ya existe una cuenta con este correo electrónico.")
+    else:
+        form = RegistroForm()
+    
+    return render(request, 'registration/registro.html', {'form': form})
 
 @login_required
 def home(request):
