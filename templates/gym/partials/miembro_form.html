@@ -5,7 +5,7 @@
             <button type="button" class="btn btn-outline-light btn-sm rounded-pill px-3 spa-link" data-url="{% url 'gym:miembro_list' %}">Volver</button>
         </div>
         <div class="premium-card p-5">
-            <form method="post" action="{% if form.instance.pk %}{% url 'gym:miembro_edit' form.instance.pk %}{% else %}{% url 'gym:miembro_create' %}{% endif %}" class="spa-form">
+            <form method="post" action="{% if form.instance.pk %}{% url 'gym:miembro_update' form.instance.pk %}{% else %}{% url 'gym:miembro_create' %}{% endif %}" class="spa-form">
                 {% csrf_token %}
                 <div class="row g-4">
                     {% for field in form %}

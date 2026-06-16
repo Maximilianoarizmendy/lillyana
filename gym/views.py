@@ -90,6 +90,22 @@ def miembro_create(request):
     return render(request, 'gym/miembro_form.html', {'form': form})
 
 @login_required
+def miembro_update(request, pk):
+    miembro = get_object_or_404(Miembro, pk=pk)
+    if request.method == 'POST':
+        form = MiembroForm(request.POST, instance=miembro)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Datos del cliente actualizados exitosamente.")
+            return redirect('gym:miembro_list')
+    else:
+        form = MiembroForm(instance=miembro)
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'gym/partials/miembro_form.html', {'form': form, 'edit_mode': True})
+    return render(request, 'gym/miembro_form.html', {'form': form, 'edit_mode': True})
+
+@login_required
 def miembro_delete(request, pk):
     miembro = get_object_or_404(Miembro, pk=pk)
     if request.method == 'POST':

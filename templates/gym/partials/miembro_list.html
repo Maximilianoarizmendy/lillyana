@@ -34,6 +34,7 @@
                         </span>
                     </td>
                     <td class="px-4 py-3 text-end">
+                        <button class="btn btn-sm btn-outline-info rounded-pill px-3 me-2 spa-link" data-url="{% url 'gym:miembro_update' miembro.pk %}">Editar</button>
                         <form action="{% url 'gym:miembro_delete' miembro.pk %}" method="post" class="d-inline spa-form">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">Eliminar</button>
