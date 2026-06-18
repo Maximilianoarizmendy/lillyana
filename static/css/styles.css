@@ -14,7 +14,7 @@
 
 body {
     background-color: var(--bg-dark);
-    color: #ffffff !important;
+    color: #ffffff;
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
@@ -31,7 +31,7 @@ body {
     min-width: 260px;
     max-width: 260px;
     background: var(--sidebar-bg);
-    color: #ffffff !important;
+    color: #ffffff;
     transition: all 0.3s;
     border-right: 1px solid var(--border-color);
     box-shadow: 4px 0 15px rgba(0,0,0,0.2);
@@ -54,14 +54,14 @@ body {
     font-size: 1.05em;
     display: flex;
     align-items: center;
-    color: #f1f5f9 !important;
+    color: #f1f5f9;
     text-decoration: none;
     transition: all 0.2s ease;
     border-left: 4px solid transparent;
 }
 
 #sidebar ul li a:hover, #sidebar ul li.active > a {
-    color: #ffffff !important;
+    color: #ffffff;
     background: rgba(255, 255, 255, 0.05);
     border-left: 4px solid var(--primary-color);
 }
@@ -82,7 +82,7 @@ body {
 
 /* Utils */
 .text-muted {
-    color: #e2e8f0 !important;
+    color: #e2e8f0;
 }
 
 /* Glassmorphism Cards */
