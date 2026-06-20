@@ -82,7 +82,7 @@ body {
 
 /* Utils */
 .text-muted {
-    color: #e2e8f0;
+    color: #e2e8f0 !important;
 }
 
 /* Glassmorphism Cards */
