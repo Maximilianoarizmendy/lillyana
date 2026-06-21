@@ -7,6 +7,11 @@
         <div class="premium-card p-5" style="border-top: 4px solid #f59e0b;">
             <form method="post" action="{% if form.instance.pk %}{% url 'gym:plan_nutricional_edit' form.instance.pk %}{% else %}{% url 'gym:plan_nutricional_create' %}{% endif %}" class="spa-form">
                 {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger p-2 small mb-3">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
                 <div class="row g-4">
                     {% for field in form %}
                     <div class="col-md-{% if field.name == 'dieta_recomendada' %}12{% else %}6{% endif %}">

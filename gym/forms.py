@@ -33,6 +33,12 @@ class ClaseForm(forms.ModelForm):
 from .models import PlanNutricional
 
 class PlanNutricionalForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.instance.pk:
+            # Solo mostrar miembros que NO tienen plan
+            self.fields['miembro'].queryset = Miembro.objects.filter(plannutricional__isnull=True)
+
     class Meta:
         model = PlanNutricional
         fields = '__all__'
